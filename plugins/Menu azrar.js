@@ -39,8 +39,8 @@ conn.relayMessage(m.chat, { viewOnceMessage: { message: { interactiveMessage: { 
 ╯───────────────────⟢ـ
 > ˼🤖˹↜ الــبــوت↶
 ╮───────────────────⟢ـ
-┆⚙️ ↜اسـم الـبـوت↶﹝𝐅𝐋𝐀𝐒𝐇﹞
-┆🪄 ↜الـمـطـور ↶﹝𝐅𝐋𝐀𝐒𝐇_𝐓𝐄𝐀𝐌﹞
+┆⚙️ ↜اسـم الـبـوت↶﹝MIDO﹞
+┆🪄 ↜الـمـطـور ↶﹝MIDO_𝐓𝐄𝐀𝐌﹞
 ┆📌 ↜الـتـشـغـيـل ↶﹝${uptime}﹞
 ┆🔖 ↜الــمــســتـخـدمـيـن ↶﹝${rtotalreg}﹞
 ╯───────────────────⟢ـ
@@ -128,7 +128,7 @@ conn.relayMessage(m.chat, { viewOnceMessage: { message: { interactiveMessage: { 
                      },
                      {
                name: "cta_url",
-               buttonParamsJson: '{"display_text":"⌈📲╎قـنـاة الــبــوت╎📲⌋","url":"https://whatsapp.com/channel/0029VaoUBmSKmCPIIiEatx1H","merchant_url":"https://whatsapp.com/channel/0029VaoUBmSKmCPIIiEatx1H"}'
+               buttonParamsJson: '{"display_text":"⌈📲╎قـنـاة الــبــوت╎📲⌋","url":"https://whatsapp.com/channel/0029VaoNSIY72WU0I4sbeX0G","merchant_url":"https://whatsapp.com/channel/0029VaoNSIY72WU0I4sbeX0G"}'
                             }
                         ]
                     }
