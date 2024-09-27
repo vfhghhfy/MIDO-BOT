@@ -1,28 +1,16 @@
-// TheMystic-Bot-MD@BrunoSobrino - _antiprivado.js
+export async function before(m, { conn, isAdmin, isBotAdmin, isOwner, isROwner }) {
+    if (m.isBaileys && m.fromMe) return !0;
+    if (m.isGroup) return !1;
+    if (!m.message) return !0;
+    if (m.text.includes('PIEDRA') || m.text.includes('PAPEL') || m.text.includes('TIJERA') || m.text.includes('serbot') || m.text.includes('jadibot')) return !0;
 
-   // Para configurar o idioma, na raiz do projeto altere o arquivo config.json
-  // Para configurar el idioma, en la raíz del proyecto, modifique el archivo config.json.
-  // To set the language, in the root of the project, modify the config.json file.
+    const chat = global.db.data.chats[m.chat];
+    const bot = global.db.data.settings[this.user.jid] || {};
 
-export async function before(m, {conn, isAdmin, isBotAdmin, isOwner, isROwner}) {
-    const datas = global
-    const idioma = datas.db.data.users[m.sender].language
-    const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
-    const tradutor = _translate.plugins._antiprivado
+    if (bot.antiPrivate && !isOwner && !isROwner) {
+        await m.reply(`*[❗] مرحبًا @${m.sender.split`@`[0]}، يُمنع التحدث في الخاص مع البوت لهذا السبب سيتم حظرك.*\n\n*اذا كنت تريد تجربه البوت ادخل جروب البوت『 https://chat.whatsapp.com/HEymhaMK6EfD4MRWj00juf 』*\n\n*اذا كنت تريد ان تكلم مطور البوت هذا رقمي 『‏‪『+249111230420‬‏*`, false, { mentions: [m.sender] });
+        await this.updateBlockStatus(m.chat, 'block');
+    }
 
-const cap = `رساله للجميع  :
-بصفتي  مطور  البوت اود  اخباركم  جميعا انه  يحظر  استخدام البوت  في الخاص وانه  يسمح فقط  باستخدام البوت من  خلال هذه المجموعه  فقط..
-https://chat.whatsapp.com/HEymhaMK6EfD4MRWj00juf`;
-   
-  if (m.isBaileys && m.fromMe) return !0;
-  if (m.isGroup) return !1;
-  if (!m.message) return !0;
-  if (m.text.includes('PIEDRA') || m.text.includes('PAPEL') || m.text.includes('TIJERA') || m.text.includes('serbot') || m.text.includes('jadibot')) return !0;
-  const chat = global.db.data.chats[m.chat];
-  const bot = global.db.data.settings[this.user.jid] || {};
-  if (bot.antiPrivate && !isOwner && !isROwner) {
-    await m.reply(cap, false, {mentions: [m.sender]});
-    await this.updateBlockStatus(m.chat, 'block');
-  }
-  return !1;
+    return !1;
 }
