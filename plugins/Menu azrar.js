@@ -1,4 +1,5 @@
 import { createHash } from 'crypto'
+import PhoneNumber from 'awesome-phonenumber'
 import { canLevelUp, xpRange } from '../lib/levelling.js'
 import fetch from 'node-fetch'
 import fs from 'fs'
@@ -6,11 +7,11 @@ const { levelling } = '../lib/levelling.js'
 import moment from 'moment-timezone'
 import { promises } from 'fs'
 import { join } from 'path'
-const time = moment.tz('Egypt').format('HH')
-let wib = moment.tz('Egypt').format('HH:mm:ss')
+const time = moment.tz('Africa/Egypt').format('HH')
+let wib = moment.tz('Africa/Egypt').format('HH:mm:ss')
 //import db from '../lib/database.js'
 
-let handler = async (m, {conn, usedPrefix, usedPrefix: _p, __dirname, text, isPrems}) => {
+let handler = async (m, { conn, usedPrefix, command}) => {
     let d = new Date(new Date + 3600000)
     let locale = 'ar'
     let week = d.toLocaleDateString(locale, { weekday: 'long' })
@@ -18,72 +19,238 @@ let handler = async (m, {conn, usedPrefix, usedPrefix: _p, __dirname, text, isPr
     let _uptime = process.uptime() * 1000
     let uptime = clockString(_uptime)
 let who = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-if (!(who in global.db.data.users)) throw `✳️ The user is not found in my database`
-  let videoUrl = 'https://telegra.ph/file/8565f5591f7bb331c7ed6.mp4';
-  let vn = './media/menu.mp3';
-  const user = global.db.data.users[m.sender];
-  const {money, joincount} = global.db.data.users[m.sender];
-  const {exp, limit, level, role} = 
-    global.db.data.users[m.sender];
+if (!(who in global.db.data.users)) throw `✳️ لم يتم العثور على المستخدم في قاعدة البيانات`
+//let vn = './media/Madara.mp3'
+//let pp = await conn.profilePictureUrl(who, 'image').catch(_ => './src/avatar_contact.png')
+let user = global.db.data.users[who]
+let {money, joincount} = global.db.data.users[m.sender];
+let { name, exp, diamond, lastclaim, registered, regTime, age, level, role, warn } = global.db.data.users[who]
 let { min, xp, max } = xpRange(user.level, global.multiplier)
 let username = conn.getName(who)
+let rtotal = Object.entries(global.db.data.users).length || '0'
 let math = max - xp
+let prem = global.prems.includes(who.split`@`[0])
 let sn = createHash('md5').update(who).digest('hex')
-let totalreg = Object.keys(global.db.data.users).length;
 let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length 
 let more = String.fromCharCode(8206)
-let readMore = more.repeat(900) 
-  const taguser = '@' +  m.sender.split('@s.whatsapp.net')[0];
-let str =`
- > ˼⚜️˹↜ *طــلـــبك* ↶
-╮────────────────⟢ـ
- *〄↞نــورت ${taguser} *
-*〄 بـــــــووت ↞👑 الــــعـــــــقــــــرب 』*
-*〄┃الــــيــــــوم ↞ 🪧『 ${week} 』*
-*〄┃وقــت الــــتــشغــــيـل ↞ ⌛『 ${uptime}』*
-*〄┃لوضـع الـبوت ↞ 🪧『 عــــــــام 』*
-*〄┃ ↞ 🌐『 مــــفـــيــش مـــنـــــصـــة دائـــــمــــــة』*
-╯──────────╰
-*｢شـــرح الـــاوامـــر ↞｣*
-*｢أوامـــر الــــمــشــرفـيـن｣*
-*｢.اوامــر-الــمشـرفين｣*
-*｢أوامــر الأعــضـــــاء｣*
-*｢.الاعــــضــــاء｣*
-*｢ أوامـــر الــتـــــرفـيــه｣*
-*｢.الــعــاب｣*
-*｢أوامـــر الـــتـــنزيــل｣*
-*｢.الـــتحـــمــيـلات｣*
-╯────────────────⟢ـ
-*｢ أوامـــر الـــصـــور｣*
-*｢.الـــصـــور｣*
-*｢أوامـــــر الـلــفــــل｣*
-*｢.الــلــفـــل｣*
-*｢ أوامــــــر الــمــلــصـــقـــات｣*
-*｢.ســـتــيـكــــرات｣*
-*｢ أوامـــــر الأصــــــوات｣*
-*｢.الاصــــــوات｣*
-*｢ أوامـــر ديـــــنــي+ســــؤال｣* 
-*｢.ديــــــــن｣*
-*｢ أوامــــر فــتــــح الـــــبــوت｣*
-*｢.فـــتــح-الـــبــوت｣*
-*｢ أوامـــر الـــــمــطــور｣*
-*｢.قــــائــــمــة_الــــمــطــور｣* 
-*｢ جــمــيـع الأوامــــر｣*
-*｢.الـــمــهـــام｣*
-╯────────────────⟢ـ
-❯⏐ 𝑀𝛩𝐻𝐴𝑀𝑀𝐸𝐷 𝐴𝐷𝐸𝐿
-╯────────────────⟢ـ   `  
-.trim();
+let readMore = more.repeat(850) 
+let taguser = '@' + m.sender.split("@s.whatsapp.net")[0]
+global.fcontact = { key: { fromMe: false, participant: `0@s.whatsapp.net`, remoteJid: 'status@broadcast' }, message: { contactMessage: { displayName: `${name}`, vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;a,;;;\nFN:${name}\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`}}}
+    await conn.sendMessage(m.chat, { react: { text: '🧾', key: m.key } })
 
-conn.sendMessage(m.chat, {
-        video: { url: videoUrl }, caption: str,
-  mentions: [m.sender,global.conn.user.jid],
-  gifPlayback: true,gifAttribution: 0
-    }, { quoted: m });
-}; 
-handler.help = ['الاوامر']
-handler.tags = ['hhs']
-handler.command = ['الاوامر'] 
+    const str = `
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+*🐉✬⃝╿↵ مرحــبـا ⌊${name}⌉*
+── • ◈ • ──
+*🐉✬⃝╿حط قبل كل امر : ⌊ . ⌉
+*🐉✬⃝╿الـبــوت لـجــروبـات بـس*
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+┏━━━━━━━━━━━━━━━━┓
+┃ *< إعدادات البوت >*
+┃≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡┃
+┣➤ الرسائل في الانتظار
+┣ ඬ⃟ ⚡ *.صلح*
+┗━━━━━━━━━━━━━━━━┛
+┏━💼 مـعلـومـات المستخدم:_ 💼━┓
+┃ 🎩  *الاسـم:* ${name} 
+┃ 💎  *الألـماس:* ${diamond} 
+┃ 🏆  *الـرتبة:* ${role}
+┃ 🎮  *الخبـرة:* ${exp}
+┃ 🪙  *ميدو كوينز:* ${money}
+┃ 🎟️  *الرموز:* ${joincount}
+┗━━━━━━━━━━━┛
+
+┏━━⏰ _الـتـاريـخ والـوقـت!_ ⏰━┓
+┃ 📆  *تـاريـخ اليـوم:* ${date} 
+┃ ⏲️  *الـوقـت الـحالـي:* ${wib} 
+┗━━━━━━━━━━━━━┛
+
+┏━━🤖 _مـعلـومـات البـوت:_🤖━━┓
+┃ ✨  *اسـم البـوت:* 𝑧ₑ𝑧ₒ_𝑏ₒ𝑡 
+┃ 💻  *المـنصـة:* 𝑯𝑬𝑹𝑶𝑲𝑼💀 
+┃ 🕓  *وقـت الـتـشغيـل:* ${uptime}
+┃ 📚  *إجـمالـي المـستخـدميـن:* ${rtotal} 
+┗━━━━━━━━━━━━━┛
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+*☰ وامـر البـوت↯°*
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+           ⩥🌐│الـجـروب│🌐⩤
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟🚫❯ .انذار
+│✮ ⃟⭕❯ .رفع-انذار
+│✮ ⃟🚷❯ .الانذارات
+│✮ ⃟➕❯ .دعوه
+│✮ ⃟📧❯ .منشن
+│✮ ⃟👽❯ .مخفي
+│✮ ⃟👨🏽‍✈️❯ .المشرفين
+│✮ ⃟🛋️❯ .جروب
+│✮ ⃟🚸❯ .طرد
+│✮ ⃟♻️❯ .رستر
+│✮ ⃟🗑️❯ .حذف
+│✮ ⃟🤿❯ .واتس
+│✮ ⃟🪀❯ .لينك
+│✮ ⃟📰❯ .جروبي
+│✮ ⃟📇❯ .فحص
+│✮ ⃟📢❯ .تغيرالترحيب 
+│✮ ⃟☠️❯ .تغيرالوداع
+│✮ ⃟↗️❯ .رفع 
+│✮ ⃟↘️❯ .خفض
+│✮ ⃟📝❯ .تغير-الاسم 
+│✮ ⃟🗒️❯ .تغيرالوصف 
+│✮ ⃟📸❯ .تغيرالصوره
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+           ⩥🧎🏽‍♂️│الــديــن│🕋⩤
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟🌃❯ .اذكار المساء
+│✮ ⃟☀❯ .اذكار الصباح
+│✮ ⃟🧎🏽‍♂️❯ .الله
+│✮ ⃟📖❯ .قران
+│✮ ⃟📺❯ .قران2
+│✮ ⃟📿❯ .اذكار
+│✮ ⃟📄❯ .اية
+│✮ ⃟🕋❯ .ايه-الكرسي
+│✮ ⃟📙❯ .سور
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+          ⩥⚙️│التحويلات│🧰⩤
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟🎈❯ .ملصق
+│✮ ⃟😂❯ .ميم
+│✮ ⃟📝❯ .كود
+│✮ ⃟🃏❯ .فضح
+│✮ ⃟©️❯ .سرقه
+│✮ ⃟🏞️❯ .لصورة
+│✮ ⃟🎪❯ .لانمي
+│✮ ⃟✨❯ .لكرتون
+│✮ ⃟🎞️❯ .لفيديو
+│✮ ⃟🔊❯ .لصوت
+│✮ ⃟🔗❯ .تليجراف
+│✮ ⃟🎭❯ .دمج
+│✮ ⃟🎲❯ .نرد
+│✮ ⃟🎙️❯ .انطق
+│✮ ⃟🎙️❯ .انطق2
+│✮ ⃟🎐❯ .مطلوب
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+           ⩥🎮│العاب│🎮⩤
+⟣┈┈┈┈┈┈⟢┈┈┈ـ⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟🎭❯ .فعاليه
+│✮ ⃟❓❯ .انمي
+│✮ ⃟⚽❯ .كوره
+│✮ ⃟🎵❯ .تخمين
+│✮ ⃟🎈❯ .العاب
+│✮ ⃟⚽❯ .رياضه
+│✮ ⃟❌❯ .اكس_او
+│✮ ⃟📛 .امسح
+│✮ ⃟🍢❯ .قرعه
+│✮ ⃟🧮❯ .رياضيات
+│✮ ⃟🎰❯ .رهان
+│✮ ⃟💁🏻‍♂️❯ .شخصية
+│✮ ⃟❓❯ .احزر
+│✮ ⃟👀❯ .عين
+│✮ ⃟🎈❯ .ايموجي
+│✮ ⃟⚡❯ .سؤال
+│✮ ⃟🎮❯ .كت
+│✮ ⃟🔤❯ .احرف
+│✮ ⃟🇪🇬❯ .علم
+│✮ ⃟🤔❯ .خمن
+│✮ ⃟🔠❯ .فكك
+│✮ ⃟🔡❯ .رتب
+│✮ ⃟❔❯ .اجابه
+│✮ ⃟❔❯ .دين
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+           ⩥🎮│الترفيه│🎮⩤
+⟣┈┈┈┈┈┈⟢┈┈┈ـ⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟❓❯ .هل
+│✮ ⃟❓❯ .لو
+│✮ ⃟💡❯ .نصيحه
+│✮ ⃟🤐❯ .صراحه
+│✮ ⃟👑❯ .تاج
+│✮ ⃟💍❯ .زواج
+│✮ ⃟💔❯ .طلاق
+│✮ ⃟👬❯ .صديق
+│✮ ⃟👬❯ .رفيق
+│✮ ⃟🙋‍♂️❯ .تحداني
+│✮ ⃟🏆❯ .توب
+│✮ ⃟😂❯ .ميمز
+│✮ ⃟🗣❯ .مقولات
+│✮ ⃟💕❯ .الحب
+│✮ ⃟🎞❯ .افلام
+│✮ ⃟💀❯ .فيلم-رعب
+│✮ ⃟📽❯ .فيلم-اكشن
+│✮ ⃟🎭❯ .فيلم-غموض
+│✮ ⃟✨❯ .فيلم-دراما
+│✮ ⃟🐱‍👤❯ .شخصيه
+│✮ ⃟👽❯ .ذكاء
+│✮ ⃟🤡❯ .غباء
+│✮ ⃟☠❯ .اختراق
+│✮ ⃟🤙❯ .بوست
+│✮ ⃟🌟❯ .اقتباس
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+           ⩥⚙️│الـأداوات│🧮⩤
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟💬❯ .تعليق
+│✮ ⃟👀❯ .شوف
+│✮ ⃟🤖❯ .زورو
+│✮ ⃟🌠❯ .جوده
+│✮ ⃟✍🏻❯ .زخرفه
+│✮ ⃟🎟️❯ .باركود
+│✮ ⃟🏹❯ .ترجمة
+│✮ ⃟🀄❯ .لوجو
+│✮ ⃟〰️❯ .وهمي 
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+          ⩥🎙️│الـتـنزيـلات│📽️⩤
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟📻❯ .اغنيه
+│✮ ⃟📽️❯ .فيديو
+│✮ ⃟🎥❯ .يوتيوب
+│✮ ⃟🧸❯ .انستجرام
+│✮ ⃟📱❯ .ابك-مود
+│✮ ⃟📱❯ .تطبيق
+│✮ ⃟📷❯ .صوره
+│✮ ⃟🌅❯ .خلفيه
+│✮ ⃟🎵❯ .تيك
+│✮ ⃟🖼❯ .صورتيك
+│✮ ⃟Ⓜ️❯ .فيس
+│✮ ⃟🎧❯ .استوري
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+           ⩥⚙️│الـبـحـث│📊⩤
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟🔍❯ .فيديو
+│✮ ⃟🔍❯ .ويكيبيديا
+│✮ ⃟🖨️❯ .مانجا
+│✮ ⃟☁❯ .الطقس
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+     ⩥🏞️│الاديـت و الـصـوره│📹⩤
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟📹❯ .ايديت
+│✮ ⃟📹❯ .ايديت2
+│✮ ⃟🎴❯ .خلفيات
+│✮ ⃟👩🏻‍❤️‍👨🏻❯ .تطقيم
+│✮ ⃟🙋🏻‍♂️❯ .طقم-اولاد
+│✮ ⃟🙋🏻‍♀️❯ .طقم-بنات
+│✮ ⃟⚽❯ .كريستيانو
+│✮ ⃟🐏❯ .ميسي
+│✮ ⃟🦮❯ .كلب
+│✮ ⃟🐈❯ .قط
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+           ⩥📌│الاعضـاء│📌⩤
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢
+│✮ ⃟👨🏻‍💻❯ .المطور
+│✮ ⃟✴️❯ .تسجيل
+│✮ ⃟📍❯ .اقتباس
+│✮ ⃟🔖❯ .بروفايل
+│✮ ⃟🍁❯ .الدعم
+│✮ ⃟🚀❯ .بنج
+│✮ ⃟👾❯ .بوت
+⟣┈┈┈┈┈┈⟢┈┈┈⟣┈┈┈┈┈┈┈⟢`
+    const { result, key, timeout } = await conn.sendMessage(m.chat,{ caption: str.trim(),  gifPlayback: true,
+  gifAttribution: 0}, { quoted: fcontact })
+    await conn.sendMessage(m.chat, { react: { text: '🧾', key: m.key } })
+
+
+}
+handler.help = ['main']
+handler.tags = ['group']
+handler.command = ['امر'] 
 
 export default handler
 function clockString(ms) {
@@ -91,10 +258,10 @@ function clockString(ms) {
     let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
     let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
     return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')}
-
+    
     function ucapan() {
-      const time = moment.tz('Egypt').format('HH')
-      let res = "بداية يوم سعيده ☀️"
+      const time = moment.tz('Asia/Kolkata').format('HH')
+      let res = "صباح الفل ☀️"
       if (time >= 4) {
         res = "صباح الخير 🌄"
       }
@@ -102,10 +269,10 @@ function clockString(ms) {
         res = "مساء الخير ☀️"
       }
       if (time >= 15) {
-        res = "مساء الخير 🌇"
+        res = "مساء النور 🌇"
       }
       if (time >= 18) {
-        res = "مساء الخير 🌙"
+        res = "تصبح على خير 🌙"
       }
       return res
-}
+                                                                                                                                                                                                                                                                    }
