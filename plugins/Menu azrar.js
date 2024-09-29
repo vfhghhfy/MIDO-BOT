@@ -1,145 +1,111 @@
+import { createHash } from 'crypto'
+import { canLevelUp, xpRange } from '../lib/levelling.js'
+import fetch from 'node-fetch'
+import fs from 'fs'
+const { levelling } = '../lib/levelling.js'
+import moment from 'moment-timezone'
+import { promises } from 'fs'
+import { join } from 'path'
+const time = moment.tz('Egypt').format('HH')
+let wib = moment.tz('Egypt').format('HH:mm:ss')
+//import db from '../lib/database.js'
+
+let handler = async (m, {conn, usedPrefix, usedPrefix: _p, __dirname, text, isPrems}) => {
+    let d = new Date(new Date + 3600000)
+    let locale = 'ar'
+    let week = d.toLocaleDateString(locale, { weekday: 'long' })
+    let date = d.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
+    let _uptime = process.uptime() * 1000
+    let uptime = clockString(_uptime)
+let who = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
+if (!(who in global.db.data.users)) throw `✳️ The user is not found in my database`
+  let videoUrl = 'https://telegra.ph/file/8565f5591f7bb331c7ed6.mp4';
+  let vn = './media/menu.mp3';
+  const user = global.db.data.users[m.sender];
+  const {money, joincount} = global.db.data.users[m.sender];
+  const {exp, limit, level, role} = 
+    global.db.data.users[m.sender];
+let { min, xp, max } = xpRange(user.level, global.multiplier)
+let username = conn.getName(who)
+let math = max - xp
+let sn = createHash('md5').update(who).digest('hex')
+let totalreg = Object.keys(global.db.data.users).length;
+let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length 
+let more = String.fromCharCode(8206)
+let readMore = more.repeat(900) 
+  const taguser = '@' +  m.sender.split('@s.whatsapp.net')[0];
+let str =`
+ > ˼⚜️˹↜ *طــلـــبك* ↶
+╮────────────────⟢ـ
+ *〄↞نــورت ${taguser} *
+*〄 بـــــــووت ↞👑 الــــعـــــــقــــــرب 』*
+*〄┃الــــيــــــوم ↞ 🪧『 ${week} 』*
+*〄┃وقــت الــــتــشغــــيـل ↞ ⌛『 ${uptime}』*
+*〄┃لوضـع الـبوت ↞ 🪧『 عــــــــام 』*
+*〄┃ ↞ 🌐『 مــــفـــيــش مـــنـــــصـــة دائـــــمــــــة』*
+╯──────────╰
+*｢شـــرح الـــاوامـــر ↞｣*
+*｢أوامـــر الــــمــشــرفـيـن｣*
+*｢.اوامــر-الــمشـرفين｣*
+*｢أوامــر الأعــضـــــاء｣*
+*｢.الاعــــضــــاء｣*
+*｢ أوامـــر الــتـــــرفـيــه｣*
+*｢.الــعــاب｣*
+*｢أوامـــر الـــتـــنزيــل｣*
+*｢.الـــتحـــمــيـلات｣*
+╯────────────────⟢ـ
+*｢ أوامـــر الـــصـــور｣*
+*｢.الـــصـــور｣*
+*｢أوامـــــر الـلــفــــل｣*
+*｢.الــلــفـــل｣*
+*｢ أوامــــــر الــمــلــصـــقـــات｣*
+*｢.ســـتــيـكــــرات｣*
+*｢ أوامـــــر الأصــــــوات｣*
+*｢.الاصــــــوات｣*
+*｢ أوامـــر ديـــــنــي+ســــؤال｣* 
+*｢.ديــــــــن｣*
+*｢ أوامــــر فــتــــح الـــــبــوت｣*
+*｢.فـــتــح-الـــبــوت｣*
+*｢ أوامـــر الـــــمــطــور｣*
+*｢.قــــائــــمــة_الــــمــطــور｣* 
+*｢ جــمــيـع الأوامــــر｣*
+*｢.الـــمــهـــام｣*
+╯────────────────⟢ـ
+❯⏐ 𝑀𝛩𝐻𝐴𝑀𝑀𝐸𝐷 𝐴𝐷𝐸𝐿
+╯────────────────⟢ـ   `  
+.trim();
+
+conn.sendMessage(m.chat, {
+        video: { url: videoUrl }, caption: str,
+  mentions: [m.sender,global.conn.user.jid],
+  gifPlayback: true,gifAttribution: 0
+    }, { quoted: m });
+}; 
+handler.help = ['الاوامر']
+handler.tags = ['hhs']
+handler.command = ['الاوامر'] 
+
+export default handler
 function clockString(ms) {
-    let h = Math.floor(ms / 3600000);
-    let m = Math.floor(ms % 3600000 / 60000);
-    let s = Math.floor(ms % 60000 / 1000);
-    return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
+    let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
+    let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
+    let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
+    return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')}
+
+    function ucapan() {
+      const time = moment.tz('Egypt').format('HH')
+      let res = "بداية يوم سعيده ☀️"
+      if (time >= 4) {
+        res = "صباح الخير 🌄"
+      }
+      if (time >= 10) {
+        res = "مساء الخير ☀️"
+      }
+      if (time >= 15) {
+        res = "مساء الخير 🌇"
+      }
+      if (time >= 18) {
+        res = "مساء الخير 🌙"
+      }
+      return res
 }
-
-import pkg from '@whiskeysockets/baileys';
-const { generateWAMessageFromContent, proto, prepareWAMessageMedia } = pkg;
-
-const handler = async (m, {conn, usedPrefix, usedPrefix: _p, __dirname, text, isPrems}) => {
-    let d = new Date(new Date + 3600000);
-    let locale = 'ar';
-    let week = d.toLocaleDateString(locale, { weekday: 'long' });
-    let date = d.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
-    let _uptime = process.uptime() * 1000;
-    let uptime = clockString(_uptime);
-    let user = global.db.data.users[m.sender];
-    let name = conn.getName(m.sender)
-    let { money, joincount } = global.db.data.users[m.sender];
-    let { exp, limit, level, role } = global.db.data.users[m.sender];
-    let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length;
-    let more = String.fromCharCode(8206);
-    let readMore = more.repeat(850);
-    let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-    let taguser = '@' + m.sender.split("@s.whatsapp.net")[0];
-  await conn.sendMessage(m.chat, { react: { text: '📂', key: m.key } })
-  const zack = 'https://envs.sh/wHc.jpg'
-  const mentionId = m.key.participant || m.key.remoteJid;
- 
-conn.relayMessage(m.chat, { viewOnceMessage: { message: { interactiveMessage: { header: { title: `harley`}, body: { text: `˼⚡˹↜ مـࢪحـبـا بـك/ي @${mentionId.split('@')[0]}
-> ˼🪪˹↜ مــعــلــومــاتــك ↶
-╮───────────────────⟢ـ
-┆⚡↜ بـريـمـيـوم↞⌊ ${user.premiumTime > 0 ? 'مــمـ🔱ـيز' : (isPrems ? 'مــمـ🔱ـيز' : 'عــ🍁ــادي') || ''} ⌉
-┆⚜️↜ مـــســـتواك↞⌊ ${level} ⌉
-┆💫↜ رتـبـتـك↞⌊ ${role} ⌉
-┆🧰↜ الـخـبـرة↞⌊ ${exp} ⌉
-┆💎↜ الـمـاس↞⌊ ${limit} ⌉
-╯───────────────────⟢ـ
-> ˼🤖˹↜ الــبــوت↶
-╮───────────────────⟢ـ
-┆⚙️ ↜اسـم الـبـوت↶﹝MIDO﹞
-┆🪄 ↜الـمـطـور ↶﹝MIDO_𝐓𝐄𝐀𝐌﹞
-┆📌 ↜الـتـشـغـيـل ↶﹝${uptime}﹞
-┆🔖 ↜الــمــســتـخـدمـيـن ↶﹝${rtotalreg}﹞
-╯───────────────────⟢ـ
-> © 𝐍𝐀𝐑𝐔𝐓𝐎 & 𝐙𝐀𝐂𝐊 2025`,subtitle: "Araab Zack",},header: { hasMediaAttachment: true,...(await prepareWAMessageMedia({ image : { url: zack } }, { upload: conn.waUploadToServer }, {quoted: m}))},
-                    contextInfo: {
-                        mentionedJid: [m.sender],
-                        isForwarded: false,
-                    },nativeFlowMessage: { buttons: [
-
-
-                            {
-                                name: 'single_select',
-                                buttonParamsJson: JSON.stringify({
-                                    title: '⌈🛡╎الــقــوائـــم╎🛡⌋',
-                                    sections: [
-                                        {
-                                            title: 'مــرحـ🛡ـبــا بــك فـي مــ☑هــام فلاش بـ🤖ـوت',
-                                            highlight_label: 'بعبص براحتك في البوت يا برو 🤖',
-                                            rows: [
-                                                {
-                                                    header: 'الــقـ👑ـســم الـاول',
-                                                    title: 'استدعاء_قسم_الاعضاء #الاعضاء',
-                                                    description: '',
-                                                    id: '.ق1'
-                                                },
-                                                {
-                                                    header: 'الــقـ👨🏻‍💻ـســم الــثــانــي',
-                                                    title: 'استدعاء_قسم_المشرفين #المشرفين',
-                                                    description: '',
-                                                    id: '.ق10'
-                                                },
-                                                {
-                                                    header: 'الــقـ🕋ـســم الــثــالــث',
-                                                    title: 'استدعاء_قسم_الدين #الدين',
-                                                    description: '',
-                                                    id: '.ق2'
-                                                },
-                                                {
-                                                    header: 'الــقـ👑ـســم الــرابــع',
-                                                    title: 'استدعاء_قسم_المطور #المطور',
-                                                    description: '',
-                                                    id: '.ق3'
-                                                },
-                                                {
-                                                    header: 'الــقـ🛡ـســم الــخــامــس',
-                                                    title: 'استدعاء_قسم_التنزيلات #التنزيلات',
-                                                    description: '',
-                                                    id: '.ق4'
-                                                },
-                                                {
-                                                    header: 'الــقـ🕹ـســم الــســادس',
-                                                    title: 'استدعاء_قسم_الالعاب #الالعاب',
-                                                    description: '',
-                                                    id: '.ق5'
-                                                },
-                                                {
-                                                    header: 'الــقـ🌀ـســم الــســابــع',
-                                                    title: 'استدعاء_قسم_التحويلات #التحويلات',
-                                                    description: '',
-                                                    id: '.ق6'
-                                                },
-                                                {
-                                                    header: 'الــقـ🤖ـســم الــتــاســع',
-                                                    title: 'استدعاء_قسم_الذكاء #الذكاء',
-                                                    description: '',
-                                                    id: '.ق7'
-                                                },
-                                                {
-                                                    header: 'الــقـ🚨ـســم الــعــاشــر',
-                                                    title: 'استدعاء_قسم_الدعم #الدعم',
-                                                    description: '',
-                                                    id: '.ق8'
-                                                },
-                                                {
-                                                    header: 'الــقـ🔍ـســم �لــحــاديــة عــشــر',
-                                                    title: 'استدعاء_قسم_ابحث #البحث',
-                                                    description: '',
-                                                    id: '.ق11'
-                                               }
-                                            ]
-                                        }
-                                    ]
-                                }),
-                  messageParamsJson: ''
-                     },
-                     {
-               name: "cta_url",
-               buttonParamsJson: '{"display_text":"⌈📲╎قـنـاة الــبــوت╎📲⌋","url":"https://whatsapp.com/channel/0029VaoNSIY72WU0I4sbeX0G","merchant_url":"https://whatsapp.com/channel/0029VaoNSIY72WU0I4sbeX0G"}'
-                            }
-                        ]
-                    }
-                }
-            }
-        }
-    }, {});
-}
-
-handler.help = ['info'];
-handler.tags = ['main'];
-handler.command = ['menu', 'مهام', 'اوامر','الاوامر','قائمة','القائمة']
-
-export default handler;
