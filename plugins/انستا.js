@@ -1,142 +1,70 @@
-import axios from "axios";
-
-const handler = async (m, { conn, args, command, usedPrefix }) => {
-  const datas = global;
-  const idioma = datas.db.data.users[m.sender].language;
-  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`));
-  const tradutor = _translate.plugins.descargas_instagram;
-
-  if (!args[0])
-    throw `*خطاء 🗿*\nمثال : \n${usedPrefix + command} https://www.instagram.com/reel/C8sWV3Nx_GZ/?igsh=MWZoeTY2cW01Nzg1bQ==`;
-  await m.reply(global.wait);
+import fetch from 'node-fetch';
+import axios from 'axios';
+import instagramGetUrl from 'instagram-url-direct';
+import {instagram} from '@xct007/frieren-scraper';
+import {instagramdl} from '@bochilteam/scraper';
+import instagramDl from '@sasmeee/igdl';
+import {fileTypeFromBuffer} from 'file-type';
+const handler = async (m, {conn, args, command, usedPrefix}) => {
+  if (!args[0]) throw `*[❗معلومه❗] امر خاطئ اكتب: ${usedPrefix + command}* https://www.instagram.com/reel/C5GSbqyKXeN/?igsh=Z293NGlmbzRhdGFl`;
+  m.reply(global.wait);
   try {
-    const img = await instagramDownload(args[0]);
-    for (let i = 0; i < img.data.length; i++) {
-      const item = img.data[i];
-      if (item.type === "image") {
-        await conn.sendMessage(
-          m.chat,
-          { image: { url: item.url } },
-          { quoted: m },
-        );
-      } else if (item.type === "video") {
-        await conn.sendMessage(
-          m.chat,
-          { video: { url: item.url } },
-          { quoted: m },
-        );
-      }
+const img = await instagramDl(args[0]);
+for (let i = 0; i < img.length; i++) {
+    const bufferInfo = await getBuffer(img[i].download_link);
+        if (bufferInfo.detectedType.mime.startsWith('image/')) {
+            await conn.sendMessage(m.chat, {image: {url: img[i].download_link}}, {quoted: m});
+        } else if (bufferInfo.detectedType.mime.startsWith('video/')) {
+            await conn.sendMessage(m.chat, {video: {url: img[i].download_link }}, {quoted: m});
+        }
+}
+  } catch {   
+  try {
+    const datTa = await instagram.download(args[0]);
+    for (const urRRl of datTa) {
+      const shortUrRRl = await (await fetch(`https://tinyurl.com/api-create.php?url=${args[0]}`)).text();
+      const tXXxt = `🔗 *Url:* ${shortUrRRl}`.trim();
+      conn.sendFile(m.chat, urRRl.url, 'error.mp4', tXXxt, m);
+      await new Promise((resolve) => setTimeout(resolve, 10000));
     }
-  } catch (err) {
-    const res = await axios.get(
-      "https://deliriusapi-official.vercel.app/download/instagram",
-      {
-        params: {
-          url: args[0],
-        },
-      },
-    );
-    const result = res.data.data;
-    for (let i = 0; i < result.length; i++) {
-      const item = result[i];
-      if (item.type === "image") {
-        await conn.sendMessage(
-          m.chat,
-          { image: { url: item.url } },
-          { quoted: m },
-        );
-      } else if (item.type === "video") {
-        await conn.sendMessage(
-          m.chat,
-          { video: { url: item.url } },
-          { quoted: m },
-        );
+  } catch {
+      try {
+        const resultss = await instagramGetUrl(args[0]).url_list[0];
+        const shortUrl2 = await (await fetch(`https://tinyurl.com/api-create.php?url=${args[0]}`)).text();
+        const txt2 = `🔗 *Url:* ${shortUrl2}`.trim();
+        await conn.sendFile(m.chat, resultss, 'error.mp4', txt2, m);
+      } catch {
+        try {
+          const resultssss = await instagramdl(args[0]);
+          const shortUrl3 = await (await fetch(`https://tinyurl.com/api-create.php?url=${args[0]}`)).text();
+          const txt4 = `🔗 *Url:* ${shortUrl3}`.trim();
+          for (const {url} of resultssss) await conn.sendFile(m.chat, url, 'error.mp4', txt4, m);
+        } catch {
+          try {
+            const human = await fetch(`https://api.lolhuman.xyz/api/instagram?apikey=${lolkeysapi}&url=${args[0]}`);
+            const json = await human.json();
+            const videoig = json.result;
+            const shortUrl1 = await (await fetch(`https://tinyurl.com/api-create.php?url=${args[0]}`)).text();
+            const txt1 = `🔗 *Url:* ${shortUrl1}`.trim();
+            await conn.sendFile(m.chat, videoig, 'error.mp4', txt1, m);
+          } catch {
+            throw `*[❗معلومه❗] حدث خطأ*`;
+          }
+        }
       }
     }
   }
 };
-
-handler.command =
-  /^(انستا|instagram|igdl|ig|انسجرام|instagram2|igdl2|ig2|instagramdl3|instagram3|igdl3|ig3)$/i;
+handler.command = /^(instagramdl|instagram|انستغرام|ig|انستا|instagram2|igdl2|ig2|instagramdl3|instagram3|igdl3|ig3)$/i;
 export default handler;
 
-const instagramDownload = async (url) => {
-  return new Promise(async (resolve) => {
-    if (!url.match(/\/(reel|reels|p|stories|tv|s)\/[a-zA-Z0-9_-]+/i)) {
-      return resolve({ status: false, creator: "Sareth" });
+const getBuffer = async (url, options) => {
+    options = options || {};
+    const res = await axios({method: 'get', url, headers: {'DNT': 1, 'Upgrade-Insecure-Request': 1}, ...options, responseType: 'arraybuffer'});
+    const buffer = Buffer.from(res.data, 'binary');
+    const detectedType = await fileTypeFromBuffer(buffer);
+    if (!detectedType || (detectedType.mime !== 'image/jpeg' && detectedType.mime !== 'image/png' && detectedType.mime !== 'video/mp4')) {
+        return null;
     }
-
-    try {
-      let jobId = await (
-        await axios.post(
-          "https://app.publer.io/hooks/media",
-          {
-            url: url,
-            iphone: false,
-          },
-          {
-            headers: {
-              Accept: "/",
-              "Accept-Encoding": "gzip, deflate, br, zstd",
-              "Accept-Language": "es-ES,es;q=0.9",
-              "Cache-Control": "no-cache",
-              Origin: "https://publer.io",
-              Pragma: "no-cache",
-              Priority: "u=1, i",
-              Referer: "https://publer.io/",
-              "Sec-CH-UA":
-                '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
-              "Sec-CH-UA-Mobile": "?0",
-              "Sec-CH-UA-Platform": '"Windows"',
-              "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-            },
-          },
-        )
-      ).data.job_id;
-      let status = "working";
-      let jobStatusResponse;
-      while (status !== "complete") {
-        jobStatusResponse = await axios.get(
-          `https://app.publer.io/api/v1/job_status/${jobId}`,
-          {
-            headers: {
-              Accept: "application/json, text/plain, /",
-              "Accept-Encoding": "gzip, deflate, br, zstd",
-              "Accept-Language": "es-ES,es;q=0.9",
-              "Cache-Control": "no-cache",
-              Origin: "https://publer.io",
-              Pragma: "no-cache",
-              Priority: "u=1, i",
-              Referer: "https://publer.io/",
-              "Sec-CH-UA":
-                '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
-              "Sec-CH-UA-Mobile": "?0",
-              "Sec-CH-UA-Platform": '"Windows"',
-              "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-            },
-          },
-        );
-        status = jobStatusResponse.data.status;
-      }
-
-      let data = jobStatusResponse.data.payload.map((item) => {
-        return {
-          type: item.type === "photo" ? "image" : "video",
-          url: item.path,
-        };
-      });
-
-      resolve({
-        status: true,
-        data,
-      });
-    } catch (e) {
-      resolve({
-        status: false,
-        msg: new Error(e).message,
-      });
-    }
-  });
+    return { buffer, detectedType };
 };
