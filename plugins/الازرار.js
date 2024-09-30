@@ -25,13 +25,13 @@ const handler = async (m, {conn, usedPrefix, usedPrefix: _p, __dirname, text, is
     let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender;
     let taguser = '@' + m.sender.split("@s.whatsapp.net")[0];
 
-    await conn.sendMessage(m.chat, { react: { text: '📂', key: m.key } });
+    await conn.sendMessage(m.chat, { react: { text: '📑', key: m.key } });
 
     const images = [
-        'https://telegra.ph/file/a79388f9fa9385f59d6a3.png',
-        'https://telegra.ph/file/9c5f3db7081f5fc0f8ad2.jpg',
-        'https://telegra.ph/file/187d2833c018e15d866c4.jpg',
-        'https://telegra.ph/file/f4f9d2420ac2b1072eb2e.jpg' // أضف عنوان URL ثالث هنا
+        'https://qu.ax/DpNP.jpg',
+        'https://qu.ax/mdoS.jpg',
+        'https://qu.ax/fGZR.jpg',
+      
     ];
 
     const randomImage = images[Math.floor(Math.random() * images.length)];
@@ -174,7 +174,7 @@ await conn.sendMessage(m.chat, { text: '*جاري تحضير قائمة الاو
                             {
                                 name: "cta_url",
                                 buttonParamsJson: JSON.stringify({
-                                    display_text: "『』قناتي《",
+                                    display_text: "『』القناة《",
                                     url: "https://whatsapp.com/channel/0029Vaich7vLdQeUgMMBPc13",
                                     merchant_url: "https://chat.whatsapp.com/GwpVRwW4o8z11bctqm9n7Q"
                                 })
