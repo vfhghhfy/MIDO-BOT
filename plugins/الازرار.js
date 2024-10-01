@@ -27,11 +27,17 @@ const handler = async (m, {conn, usedPrefix, usedPrefix: _p, __dirname, text, is
 
     await conn.sendMessage(m.chat, { react: { text: '📑', key: m.key } });
 
-    const videoUrl = 'https://qu.ax/Bdp.mp4';
+    const images = [
+        'https://qu.ax/DpNP.jpg',
+        'https://qu.ax/mdoS.jpg',
+        'https://qu.ax/fGZR.jpg',
+      
+    ];
 
-    var messa = await prepareWAMessageMedia({ video: { url: videoUrl } }, { upload: conn.waUploadToServer });
+    const randomImage = images[Math.floor(Math.random() * images.length)];
 
-    await conn.sendMessage(m.chat, { text: '*جاري تحضير قائمة الاوامر*' }, { quoted: global.fcontact });
+    var messa = await prepareWAMessageMedia({ image: { url: randomImage } }, { upload: conn.waUploadToServer });
+await conn.sendMessage(m.chat, { text: '*جاري تحضير قائمة الاوامر*' }, { quoted: global.fcontact });
     await new Promise(resolve => setTimeout(resolve, 1000));
     conn.relayMessage(m.chat, {
         viewOnceMessage: {
@@ -68,7 +74,7 @@ const handler = async (m, {conn, usedPrefix, usedPrefix: _p, __dirname, text, is
                     header: {
                         title: '',
                         hasMediaAttachment: true,
-                        videoMessage: messa.videoMessage,
+                        imageMessage: messa.imageMessage,
                     },
                     nativeFlowMessage: {
                         buttons: [
