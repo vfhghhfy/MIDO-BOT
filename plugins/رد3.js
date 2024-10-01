@@ -8,7 +8,8 @@ let handler = async (m, { conn }) => {
     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
     
     await conn.sendMessage(m.chat, { react: { text: randomEmoji, key: m.key } });
-    conn.sendFile(m.chat, 'https://qu.ax/HAJX.jpg', 'image.jpg', message, m);
+    
+    conn.sendFile(m.chat, 'https://qu.ax/QyCY.mp4', 'video.mp4', message, m);
 };
 
 handler.customPrefix = /^ميدو$/i;
