@@ -13,8 +13,8 @@ import { en, es, id, ar, pt } from "./lib/idiomas/total-idiomas.js"
 // [ES] > Agrega el número que será Bot y los que serán propietarios.
 // [EN] > Add the number that will be Bot and those that will be owners.
 global.owner = [
-["249128749239", '👑 𝑀𝐼𝐷𝛩 👑', true], //𝙂𝙖𝙩𝙖𝘽𝙤𝙩-𝙈𝘿 💖🐈
-["249111230420", '💫 𝑀𝛩𝐻𝐴𝑀𝑀𝐸𝐷 𝐴𝐷𝐸𝐿 💫', true], //𝙂𝙖𝙩𝙖𝘽𝙤𝙩-𝙈𝘿 💖🐈
+["249128749239", '👑 𝑀𝐼𝐷𝛩 👑', true], //𝑀𝐼𝐷𝛩 💖🐈
+["249111230420", '💫 𝑀𝛩𝐻𝐴𝑀𝑀𝐸𝐷 𝐴𝐷𝐸𝐿 💫', true], //𝑀𝛩𝐻𝐴𝑀𝑀𝐸𝐷 𝐴𝐷𝐸𝐿 💖🐈
 ]
 
 
@@ -127,8 +127,8 @@ global.desc2 = '' // Add long description (90 caractres max) (Este parámetro se
 global.country = '' // Add country, example: 🇪🇨
 // • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •
 
-global.packname = `𝑀𝐼𝐷𝛩﹝⚡️﹞𝑀𝐼𝐷𝛩` //"𝙂𝙖𝙩𝙖𝘽𝙤𝙩-𝙈𝘿 🐈"
-global.author = `Naruto & Zack` //"𝙂𝙖𝙩𝙖 𝘿𝙞𝙤𝙨"
+global.packname = `𝑀𝐼𝐷𝛩﹝⚡️﹞𝑀𝐼𝐷𝛩` //"𝑀𝐼𝐷𝛩 🐈"
+global.author = `𝑀𝛩𝐻𝐴𝑀𝑀𝐸𝐷 𝐴𝐷𝐸𝐿` //"𝑀𝐼𝐷𝛩"
 
 // • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •
 // [ES] > INFORMACIÓN DE VERSIONES DEL BOT, POR FAVOR 
@@ -165,7 +165,7 @@ global.exito = eg
 
 // • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •
 global.wm = "𝑀𝐼𝐷𝛩﹝⚡️﹞𝐁𝐎𝐓"
-global.igfg = "Naruto & Zack"
+global.igfg = "𝑀𝛩𝐻𝐴𝑀𝑀𝐸𝐷 𝐴𝐷𝐸𝐿"
 global.nomorown = "249111230420"
 global.pdoc = ["application/vnd.openxmlformats-officedocument.presentationml.presentation", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/msword", "application/pdf", "text/rtf"]
 // • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •
