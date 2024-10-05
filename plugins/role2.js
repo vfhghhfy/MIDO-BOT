@@ -1,92 +1,59 @@
-//by araab zack
-
-const roles = {
-    'مواطن 👨🏻‍💼': 0,
-     'فقير 😞': 2,
-      'موظف 👨🏻‍🔧': 4,
-       'رجل اعمال 🧑🏻‍✈️': 5,
-        'طباخ 👨🏻‍🍳': 10,
-    'عميل سري 🥷🏻': 15,
-     'عسكري 💂🏻': 20,
-      'كاتب 📚': 30,
-       'جاسوس 🕵🏻': 35,
-       'مصارع 🤼‍♂': 40,
-    'قاضي 👩‍⚖': 45,
-     'لاعب كرة قدم ⚽': 50,
-      'رسام 🧑🏻‍🎨': 55,
-       'مدير بنك 🏦': 60,
-        'مدير مدرسة 🧶': 65,
-    'ظابط شرطة 👮‍♂️': 70,
-     'كاتب ✒️': 75,
-      'ظابط جيش 🎖️': 80,
-       'ممثل 👨‍🎤': 85,
-        'نائب الرئيس 🤵🏻‍♂': 90,
-    'الرئيس 🤵🏻‍♂': 100,
-}
-
 let handler = m => m
-handler.before = async function (m, { conn }) {
-        let user = db.data.users[m.sender]
-        let level = user.level
-        let role = (Object.entries(roles).sort((a, b) => b[1] - a[1]).find(([, minLevel]) => level >= minLevel) || Object.entries(roles)[0])[0]
-        user.role = role
-        return !0
-    
-}
-export default handler 
 
-/*let handler = m => m
-
-handler.before = function (m, text) {
+handler.before = function (m) {
     let user = global.db.data.users[m.sender]
-    let role = (user.level <= 3) ? '*NOVATO(A) III* 🪤'
-        : ((user.level >= 3) && (user.level <= 6)) ? '*NOVATO(A) II* 🪤'
-            : ((user.level >= 6) && (user.level <= 9)) ? '*NOVATO(A) I* 🪤'
-                : ((user.level >= 9) && (user.level <= 12)) ? '*APRENDIS III* 🪚'
-                    : ((user.level >= 12) && (user.level <= 15)) ? '*APRENDIS II* 🪚'
-                        : ((user.level >= 15) && (user.level <= 18)) ? '*APRENDIS I* 🪚'
-                            : ((user.level >= 18) && (user.level <= 21)) ? '*EXPLORADOR(A) III* 🪓'
-                                : ((user.level >= 21) && (user.level <= 24)) ? '*EXPLORADOR(A) II* 🪓'
-                                    : ((user.level >= 24) && (user.level <= 27)) ? '*EXPLORADOR(A) I* 🪓'
-                                        : ((user.level >= 27) && (user.level <= 30)) ? '*MAESTRO(A) III* ⚒️'
-                                            : ((user.level >= 30) && (user.level <= 33)) ? '*MAESTRO(A) II* ⚒️'
-                                                : ((user.level >= 33) && (user.level <= 36)) ? '*MAESTRO(A) I* ⚒️'
-                                                    : ((user.level >= 36) && (user.level <= 39)) ? '*IRON III* 🦾'
-                                                        : ((user.level >= 39) && (user.level <= 42)) ? '*IRON II* 🦾'
-                                                            : ((user.level >= 42) && (user.level <= 45)) ? '*IRON I* 🦾'
-                                                                : ((user.level >= 45) && (user.level <= 48)) ? '*PLATA III* 🔮'
-                                                                    : ((user.level >= 48) && (user.level <= 51)) ? '*PLATA II* 🔮'
-                                                                        : ((user.level >= 51) && (user.level <= 54)) ? '*PLATA I* 🔮'
-                                                                            : ((user.level >= 54) && (user.level <= 57)) ? '*ORO III* 🏅'
-                                                                                : ((user.level >= 57) && (user.level <= 60)) ? '*ORO II* 🏅'
-                                                                                    : ((user.level >= 60) && (user.level <= 63)) ? '*ORO I* 🏅'
-                                                                                        : ((user.level >= 63) && (user.level <= 66)) ? '*DIAMANTE III* 💎'
-                                                                                            : ((user.level >= 66) && (user.level <= 69)) ? '*DIAMANTE II* 💎'
-                                                                                                : ((user.level >= 69) && (user.level <= 71)) ? '*DIAMANTE I* 💎'
-                                                                                                    : ((user.level >= 71) && (user.level <= 74)) ? '*PRO EN GATABOT III* 😼'
-                                                                                                        : ((user.level >= 74) && (user.level <= 77)) ? '*PRO EN GATABOT II* 😼'
-                                                                                                            : ((user.level >= 77) && (user.level <= 80)) ? '*PRO EN GATABOT I* 😼'
-                                                                                                                : ((user.level >= 80) && (user.level <= 83)) ? '*SUPER PRO III* 🎩'
-                                                                                                                    : ((user.level >= 83) && (user.level <= 86)) ? '*SUPER PRO II* 🎩'
-                                                                                                                        : ((user.level >= 86) && (user.level <= 89)) ? '*SUPER PRO I* 🎩'
-                                                                                                                            : ((user.level >= 89) && (user.level <= 91)) ? '*LEGENDARIO(A) III* 🛡️'
-                                                                                                                                : ((user.level >= 91) && (user.level <= 94)) ? '*LEGENDARIO(A) II* 🛡️'
-                                                                                                                                    : ((user.level >= 94) && (user.level <= 97)) ? '*LEGENDARIO(A) I* 🛡️'
-                                                                                                                                        : ((user.level >= 97) && (user.level <= 100)) ? '*LEYENDA III* 🏆'
-                                                                                                                                           : ((user.level >= 100) && (user.level <= 105)) ? '*LEYENDA II* 🏆'      
-                                                                                                                                              : ((user.level >= 105) && (user.level <= 120)) ? '*LEYENDA I* 🏆'
-                                                                                                                                                 : ((user.level >= 120) && (user.level <= 150)) ? '*ESTELAR III* ☄️'
-                                                                                                                                                    : ((user.level >= 150) && (user.level <= 160)) ? '*ESTELAR II* ☄️'
-                                                                                                                                                        : ((user.level >= 160) && (user.level <= 170)) ? '*ESTELAR I* ☄️'
-                                                                                                                                                            : ((user.level >= 170) && (user.level <= 185)) ? '*TOP ASTRAL III* ⚜️🔱'
-                                                                                                                                                                : ((user.level >= 185) && (user.level <= 200)) ? '*TOP ASTRAL III* ⚜️🔱'
-                                                                                                                                                                    : ((user.level >= 200) && (user.level <= 700)) ? '*TOP ASTRAL III* ⚜️🔱'
-                                                                                                                                                                            : ((user.level >= 700) && (user.level <= 1000)) ? '👑 *ÉLITE GLOBAL* 🏁'
-                                                                                                                                                                                : '👑 *∞ ÉLITE GLOBAL* 💎🏁'
-
-
+  let role = (user.level <= 3) ? 'ناروتو أوزوماكي 🍥'
+      : ((user.level >= 3) && (user.level <= 6)) ? 'فيجيتا 🐉'
+      : ((user.level >= 6) && (user.level <= 9)) ? 'ليفاي أكرمان 🤺'
+      : ((user.level >= 9) && (user.level <= 12)) ? 'مونكي د. لوفي 🏴‍☠️'
+      : ((user.level >= 12) && (user.level <= 15)) ? 'إينوياشا 🐾'
+      : ((user.level >= 15) && (user.level <= 18)) ? 'إيرزا سكارليت ⚔️'
+      : ((user.level >= 18) && (user.level <= 21)) ? 'جوكو 🌠'
+      : ((user.level >= 21) && (user.level <= 24)) ? 'سايتاما 🥋'
+      : ((user.level >= 24) && (user.level <= 27)) ? 'إيتشيغو كوروساكي ⚔️'
+      : ((user.level >= 27) && (user.level <= 30)) ? 'إدوارد إلريك 🤖'
+      : ((user.level >= 30) && (user.level <= 33)) ? 'كيلوا زولديك ⚡'
+      : ((user.level >= 33) && (user.level <= 36)) ? 'ناتسو دراغنيل 🔥'
+      : ((user.level >= 36) && (user.level <= 39)) ? 'ليلوش في بريطانيا 👑'
+      : ((user.level >= 39) && (user.level <= 42)) ? 'لايت ياغامي 📓'
+      : ((user.level >= 42) && (user.level <= 45)) ? 'أسوكا لانجلي 🤖'
+      : ((user.level >= 45) && (user.level <= 48)) ? 'إيرين ييغر ⚙️'
+      : ((user.level >= 48) && (user.level <= 51)) ? 'ساسكي أوتشيها 🌪️'
+      : ((user.level >= 51) && (user.level <= 54)) ? 'غون فريكس 🎣'
+      : ((user.level >= 54) && (user.level <= 57)) ? 'فيجيتا (سوبر سايان) 🐉'
+      : ((user.level >= 57) && (user.level <= 60)) ? 'رونوا زورو ⚔️'
+      : ((user.level >= 60) && (user.level <= 63)) ? 'ساسكي أوتشيها (شارينغان) 🌀'
+      : ((user.level >= 63) && (user.level <= 66)) ? 'جوكو (سوبر سايان) 🌠'
+      : ((user.level >= 66) && (user.level <= 69)) ? 'إدوارد إلريك (فلميتال) ⚙️'
+      : ((user.level >= 69) && (user.level <= 71)) ? 'ليلوش في بريطانيا (زيرو) 👑'
+      : ((user.level >= 71) && (user.level <= 74)) ? 'إيرين ييغر (تيتان) 🦋'
+      : ((user.level >= 74) && (user.level <= 77)) ? 'ليفاي أكرمان (أكرسبين) 🤺'
+      : ((user.level >= 77) && (user.level <= 80)) ? 'ناروتو أوزوماكي (كيوبي) 🦊'
+      : ((user.level >= 80) && (user.level <= 83)) ? 'إيرزا سكارليت (نايتووكر) ⚔️'
+      : ((user.level >= 83) && (user.level <= 86)) ? 'غون فريكس (بالغ) 🌟'
+      : ((user.level >= 86) && (user.level <= 89)) ? 'كيلوا زولديك (جود سبيد) ⚡'
+      : ((user.level >= 89) && (user.level <= 91)) ? 'سايتاما (ضربة جادة) 💪'
+      : ((user.level >= 91) && (user.level <= 94)) ? 'مونكي د. لوفي (جير فورث) 🏴‍☠️'
+      : ((user.level >= 94) && (user.level <= 97)) ? 'إيتشيغو كوروساكي (بانكاي) ⚔️'
+      : ((user.level >= 97) && (user.level <= 100)) ? 'لايت ياغامي (كيرا) 📓'
+      : ((user.level >= 100) && (user.level <= 105)) ? 'أسوكا لانجلي (وحدة إيفا-02) 🤖'
+      : ((user.level >= 105) && (user.level <= 120)) ? 'فيجيتا (سوبر سايان بلو) 💙🐉'
+      : ((user.level >= 120) && (user.level <= 150)) ? 'ناروتو أوزوماكي (ستة مسارات) 🔥🌀'
+      : ((user.level >= 150) && (user.level <= 160)) ? 'جوكو (الغريزة الفائقة) ⚡🌠'
+      : ((user.level >= 160) && (user.level <= 170)) ? 'إيرين ييغر (تيتان الهجوم) 🦋⚙️'
+      : ((user.level >= 170) && (user.level <= 185)) ? 'سايتاما (سلسلة جادة: قلب الطاولة الجادة) 🤣💪'
+      : ((user.level >= 185) && (user.level <= 200)) ? 'إيرزا سكارليت (ملكة السيوف) ⚔️👑'
+      : ((user.level >= 200) && (user.level <= 400)) ? 'غون فريكس (تحول بالغ) 🌟'
+      : ((user.level >= 405) && (user.level <= 700)) ? 'كيلوا زولديك (جود سبيد) ⚡'
+      : ((user.level >= 700) && (user.level <= 1000)) ? 'لايت ياغامي (عيون شينيجامي) 👀📓'
+      : ((user.level >= 1000) && (user.level <= 1500)) ? 'ليلوش في بريطانيا (كود غياس) 👑'
+      : ((user.level >= 1500) && (user.level <= 2000)) ? 'إدوارد إلريك (الحجر الفلسفي) ⚙️'
+      : ((user.level >= 2000) && (user.level <= 3000)) ? 'ناروتو أوزوماكي (هوكاجي) 🍥👑'
+      : ((user.level >= 3000) && (user.level <= 5000)) ? 'ساسكي أوتشيها (رينيغان) 🌀🌌'
+      : ((user.level >= 5000) && (user.level <= 10000)) ? 'مونكي د. لوفي (ملك القراصنة) 🏴‍☠️👑'
+      : '(انما) رونوا ميدو 🐉🌟'
     user.role = role
     return true
 }
 
-export default handler */
+export default handler
