@@ -1,33 +1,41 @@
 import fetch from 'node-fetch';
 
-let handler = async (m, { conn, text }) => {
+let handler = async (m, { conn, text, args, usedPrefix, command }) => {
+  try {
+    if (!text) throw 'uhm.. what do you want to say?';
 
-    if (!text) throw "يرجى كتابة نص للسؤال، على سبيل المثال: .بوت ما هي أركان الإسلام؟";
+    const emojis = ['🤖', '😎', '🔥', '💯', '🚀', '🎉', '👌', '👏', '👍', '💡', '🔍', '💥', '⚡', '😃', '💪', '🙌', '🧠', '🤔', '😄', '📚', '🎯', '🌟', '✨', '🔮', '🦾'];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    await m.react(randomEmoji);
 
-    try {
-        await conn.sendMessage(m.chat, { text: "انتظر لحظة... 💭" }, { quoted: m });
+    const prompt = encodeURIComponent(text);
+    let userid = conn.getName(m.sender) || "default";
+    let apiurl = `https://api.guruapi.tech/ai/gpt4?username=${userid}&query=hii${prompt}`;
 
-        const kurosakiApi = 'https://kurosaki-api-3mk.osc-fr1.scalingo.io/api/ai/gpt4?q=' + encodeURIComponent(text);
-        var response = await fetch(kurosakiApi);
-        var res = await response.json();
+    const result = await fetch(apiurl);
+    const response = await result.json();
 
-        if (res.status) {
-            if (res.kurosaki) {
-                await conn.sendFile(m.chat, 'https://telegra.ph/file/2d4df0601b61da5e07be7.jpg', 'image.png', res.kurosaki, m, { caption: res.kurosaki });
-            } else {
-                await conn.sendMessage(m.chat, { text: "لم يتم العثور على نتيجة مناسبة لإجابتك. حاول مرة أخرى." }, { quoted: m });
-            }
-        } else {
-            await conn.sendMessage(m.chat, { text: "حدث خطأ أثناء محاولة الحصول على الإجابة. الرجاء المحاولة لاحقاً." }, { quoted: m });
-        }
-    } catch (error) {
-        console.error(error);
-        await conn.sendMessage(m.chat, { text: "فشل، الرجاء المحاولة في وقت لاحق." }, { quoted: m });
-    }
+    if (!response.msg) throw 'No result found';
+
+    const replyText = response.msg;
+    await conn.sendButton(
+      m.chat, 
+      replyText, 
+      author, 
+      'https://qu.ax/XRHtJ.jpg',  
+      [['الــمــطـور', `.المطور`]], 
+      null, 
+      [['قــنـاة الــبــوت', `https://whatsapp.com/channel/0029VaoNSIY72WU0I4sbeX0G`]], 
+      m
+    );
+  } catch (error) {
+    console.error(error);
+    m.reply('*مرحبا ضع سؤالك يا اخي 🤡*');
+  }
 };
 
-handler.command = ['gpt4', 'بوت'];
-handler.tags = ['ai'];
-handler.help = ['gpt4 <النص> - للحصول على إجابة باستخدام GPT-4'];
+handler.help = ['gpt4 <text>'];
+handler.tags = ['tools'];
+handler.command = /^(بوت)$/i;
 
 export default handler;
