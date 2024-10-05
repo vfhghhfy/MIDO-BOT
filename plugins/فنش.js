@@ -1,11 +1,13 @@
-let handler = async (m, {command, text, conn, usedPrefix}) => {
+const handler = async (m, { conn, text }) => {
+  if (!text) throw 'عايز تفنش مين يا حب';
 
-let url = 'https://api.whatsapp.com/send?phone=';
-let a7a = url + text;
-await conn.reply(m.chat, a7a, m);
-}
-    handler.help = ['تبنيد'];
-    handler.tags = ['K U R O S A K I'];
-    handler.command = /^(فنش)$/i
+  let Url = 'https://api.whatsapp.com/send?phone=';
+  let A7A = Url + `${text}`;
+  await conn.reply(m.chat, A7A, m);
+};
 
-    export default handler;
+handler.help = ['finish'];
+handler.tags = ['finish'];
+handler.command = /^(فنش)$/i;
+
+export default handler;
