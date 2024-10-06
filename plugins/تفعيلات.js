@@ -1,169 +1,155 @@
 const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, isROwner}) => {
-  const optionsFull = `*الخيار:* ✨ | WELCOME
-*الأمر:* ${usedPrefix + command} welcome
-*الوصف:* تفعيل أو تعطيل الترحيب في المجموعة.
+  const optionsFull = `*الخيار:* ✨ | الترحيب
+*الامر:* ${usedPrefix + command} الترحيب
+*الوصف:* فتح او قفل الترحيب في الجروب.
 
 --------------------------------
 
-*الخيار:* 🌎 | وضع عام
-*الأمر:* ${usedPrefix + command} public
-*الوصف:* يجعل البوت قابل للاستخدام علنيًا أو خاصًا.
-*ملحوظة:* يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+*الخيار:* 🌎 | مود العام
+*الامر:* ${usedPrefix + command} عام
+*الوصف:* يصبح البوت علنا او خاصا.
+*الحاله:* لا يمكن استخدام هذا الامر الا بواسطه المطور.
 
 --------------------------------
 
-*الخيار:* 🥵 | وضع جنسي
-*الأمر:* ${usedPrefix + command} modohorny
-*الوصف:* تفعيل أو تعطيل الأوامر الخاصة بالكبار في المجموعة.
+*الخيار:* 🔗 | مضاد اللينكات
+*الامر:* ${usedPrefix + command} مضاداللينكات
+*الحاله:* تشغيل او ايقاف مضاد لينكات الواتس.
+*الحاله:* يجب ان يكون مفعلا.
 
 --------------------------------
 
-*الخيار:* 🔗 | ANTILINK
-*الأمر:* ${usedPrefix + command} antilink
-*الوصف:* تفعيل أو تعطيل ميزة منع الروابط في واتساب.
-*ملحوظة:* يتعين تفعيل القيد.
+*الخيار:* 🔗 | مضاد اللنكات 2
+*الامر:* ${usedPrefix + command} مضاداللينكات2
+*الوصف:* تشغيل وا اقاف مضاد اي لنكات.
+*الحاله:* يجب ان يكون مفعلا.
 
 --------------------------------
 
-*الخيار:* 🔗 | ANTILINK 2
-*الأمر:* ${usedPrefix + command} antilink2
-*الوصف:* تفعيل أو تعطيل ميزة منع الروابط التي تبدأ بـ HTTPS.
-*ملحوظة:* يتعين تفعيل القيد.
+*الخيار:* 🔎 | كشف
+*الامر:* ${usedPrefix + command} كشف
+*:* تنشيط او الغاء التعديل علي الوصف.
 
 --------------------------------
 
-*الخيار:* 🔎 | DETECT
-*الأمر:* ${usedPrefix + command} detect
-*الوصف:* تفعيل أو تعطيل إشعارات التغييرات في المجموعة.
+*الخيار:* 🔎 | كشف 2
+*الامر:* ${usedPrefix + command} كشف2
+*الوصف:* يكشف التعديلات في المجموعه و يحافظ علي اداره افضل.
 
 --------------------------------
 
-*الخيار:* 🔎 | DETECT 2
-*الأمر:* ${usedPrefix + command} detect2
-*الوصف:* يكتشف التغييرات في المجموعة ويحسن إدارتها.
+*الخيار:* ❗ | يقيد
+*الامر:* ${usedPrefix + command} تقيد
+*وصف:* فتح او قفل قيود البوت مثلا  يطرد و يضيفه.
+*حاله:* المطور بس الي يستعمل الامر ده.
 
 --------------------------------
 
-*الخيار:* ❗ | RESTRICT
-*الأمر:* ${usedPrefix + command} restrict
-*الوصف:* تفعيل أو تعطيل قيود البوت، مثل إخراج أو إضافة أشخاص إلى المجموعة.
-*ملحوظة:* يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+*الخيار:* ☑️ | القرائه التلقائي
+*الامر:* ${usedPrefix + command} الصحين
+*الوصف:* فتح او قفل القرائه التلقائي.
+*الحاله:* المطور بس الي بيتسعمل الامر ده.
 
 --------------------------------
 
-*الخيار:* ☑️ | AUTOREAD
-*الأمر:* ${usedPrefix + command} autoread
-*الوصف:* يقوم بتحديد الرسائل والحالات كمقروءة تلقائيًا.
-*ملحوظة:* يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+*الخيار:* 🔊 |  اصوات
+*الامر:* ${usedPrefix + command} اصوات
+*الوصف:* فتح او قفل الريكات في الجروب.
 
 --------------------------------
 
-*الخيار:* 🔊 | AUDIOS
-*الأمر:* ${usedPrefix + command} audios
-*الوصف:* تفعيل أو تعطيل أوامر الصوت بدون بادئة في المجموعة.
+*الخيار:* 👾 | ستيكر تلقائي
+*الامر:* ${usedPrefix + command} ستيكرتلقائي 
+*الوصف:*تصبح جميع الصور أو مقاطع الفيديو المرسلة في المجموعة ملصقات. 
 
 --------------------------------
 
-*الخيار:* 👾 | AUTOSTICKER
-*الأمر:* ${usedPrefix + command} autosticker 
-*الوصف:* تحويل جميع الصور أو مقاطع الفيديو المرسلة في المجموعة إلى ملصقات.
+*الخيار:* 💬 | خاص فقط
+*الامر:* ${usedPrefix + command} برايفت
+*الوصف:* سوف يستجيب البوت في الخاص بس.
+*الحاله:* المطور بس الي يقدر يستعمل الامر ده.
 
 --------------------------------
 
-*الخيار:* 💬 | PCONLY
-*الأمر:* ${usedPrefix + command} pconly
-*الوصف:* يقوم البوت بالرد فقط على الأوامر في دردشة خاصة.
-*ملحوظة:* يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+*الخيار:* 🏢 | جروبات فقط
+*الامر:* ${usedPrefix + command} جروبات
+*الوصف:* البوت هيشتغل في الجروبات بس. 
+*الحاله:* المكور بس الي يستخدم الامر ده.
 
 --------------------------------
 
-*الخيار:* 🏢 | GCONLY
-*الأمر:* ${usedPrefix + command} gconly
-*الوصف:* يقوم البوت بالرد فقط على الأوامر إذا كانت في مجموعة.
-*ملحوظة:* يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+*الخيار:* ❌ | مضاد الاخفاء
+*الامر:* ${usedPrefix + command} مضادالاخفاء
+*الوصف:* الصوره او الفيديو الذي يبعت ليرا مره واحده يبعت من البوت مره اخري بشكل طبيعي. 
 
 --------------------------------
 
-*الخيار:* ❌ | ANTIVIEWONCE 
-*الأمر:* ${usedPrefix + command} antiviewonce
-*الوصف:* يعيد إرسال الصور المرسلة للعرض مرة واحدة بشكل عادي بواسطة البوت.
+*الخيار:* 📵 | ممنوع الاتصال
+*الامر:* ${usedPrefix + command} مضادالاتصال
+*الوصف:* يبلك اي حد يرن علي رقم البوت. 
+*الحاله:* المطور بس الي يستخدم الامر ده.
 
 --------------------------------
 
-*الخيار:* 📵 | ANTILLAMADAS
-*الأمر:* ${usedPrefix + command} anticall
-*الوصف:* يقوم البوت بحظر الأشخاص الذين يتصلون بالبوت.
-*ملحوظة:* يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+*الخاله:* 💬 | مضاد الخاص
+*الامر:* ${usedPrefix + command} مضادالخاص
+*الوصف:* يبلك اي حد يكلم البوت خاص. 
+*الحاله:* المطور بس الي يستخدم الامرد ده.
 
 --------------------------------
 
-*الخيار:* 💬 | ANTIPRIVADO
-*الأمر:* ${usedPrefix + command} antiprivado
-*الوصف:* يقوم البوت بحظر الأشخاص الذين يكتبون إلى البوت بشكل خاص.
-*ملحوظة:* يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
-
+*الخيار:* 🤬 | مضاد الشتائم
+*الامر:* ${usedPrefix + command} مضادالشتائم
+*الوصف:* يقوم بتحذير اي شخص سب او شتم او كتب شئ عيب واذا تجاوذ التحذيرات يقوم بطرده.
+*الحاله:* يجب ان يكون التقيد مفعلا.
 
 --------------------------------
 
-*Opción:* 🤬 | ANTITOXIC
-الأمر: ${usedPrefix + command} antitoxic
-الوصف: يكتشف الكلمات النابية ويحذر المشارك في المجموعة قبل أن يتم طرده.
-ملحوظة: يجب تفعيل القيد.
+*الخيار:* 🤖 | البوت الفرعي
+*الامر:* ${usedPrefix + command} البوت-الفرعي
+*الحاله:* تفعيل و اقاف امر (${usedPrefix}serbot / ${usedPrefix}jadibot). 
+*الحاله:* المطور بس الي يقدر يستعمل الامر ده.
 
-الخيار: 🕸️ | ANTITRABAS
-الأمر: ${usedPrefix + command} antitraba
-الوصف: يكتشف النصوص الطويلة التي قد تكون فيروسات وتسبب تأخيرًا في الدردشة ويقوم بحذف المستخدم.
-ملحوظة: يجب تفعيل القيد.
+--------------------------------
 
-الخيار: 👎 | ANTIARABES
-الأمر: ${usedPrefix + command} antiarabes
-الوصف: إذا انضم رقم عربي إلى المجموعة، يقوم البوت بحذفه تلقائيًا.
-ملحوظة: يجب تفعيل الترحيب والقيد.
+*الخيار:* 👑 | الادمن
+*الامر:* ${usedPrefix + command} الادمن-فقط
+*الوصف:* سوف يجيب البوت علي الادمن فقط.
 
-الخيار: 👎 | ANTIARABES 2
-الأمر: ${usedPrefix + command} antiarabes2
-الوصف: إذا كتب رقم عربي في المجموعة، يقوم البوت بحذفه تلقائيًا.
-ملحوظة: يجب تفعيل القيد.
+--------------------------------
 
-الخيار: 🤖 | MODEJADIBOT
-الأمر: ${usedPrefix + command} modejadibot
-الوصف: تفعيل أو تعطيل استخدام الأمر لرفع البوت (${usedPrefix}serbot / ${usedPrefix}jadibot).
-ملحوظة: يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+*الخيار:* 😃 | سمسمي
+*الامر:* ${usedPrefix + command} سمسمي
+*الوصف:* هيبدا البوت يرد باستخدام الذكاء الصتناعي سمسمي.
 
-الخيار: 👑 | MODOADMIN
-الأمر: ${usedPrefix + command} modoadmin
-الوصف: يقوم البوت بالرد فقط على المسؤولين في المجموعة.
+--------------------------------
 
-الخيار: 😃 | SIMSIMI
-الأمر: ${usedPrefix + command} simsimi
-الوصف: يبدأ البوت في الرد على الرسائل باستخدام ذكاء صناعي من SimSimi.
+*الخيار:* ⏳ | مضاد الاسبام
+*الامر:* ${usedPrefix + command} مضادالاسبام
+*الوصف:* يكتشف البوت بعد ارسال 5 رسائل و يحظر المستخدم.
+*الخاله:* المطور بس الي يستخدم الامر ده.
 
-الخيار: ⏳ | ANTISPAM
-الأمر: ${usedPrefix + command} antispam
-الوصف: يكتشف عندما يقوم مستخدم بعمل سبام للأوامر ويحظره لمدة 5 ثوانٍ ويحذره.
-ملحوظة: يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+--------------------------------
 
-الخيار: 🛡️ | ANTIDELETE
-الأمر: ${usedPrefix + command} antidelete
-الوصف: يكتشف عندما يقوم مستخدم بحذف رسالة ويعيد إرسالها.
+*الخيار:* 🛡️ | مضاد الحذف
+*الامر:* ${usedPrefix + command} مضادالحذف
+*الوصف:* يكتشف البوت الرساله المحذوفه و يقوم بتحويلها للمستخدم.
 
-الخيار: 🔊 | AUDIOS_BOT
-الأمر: ${usedPrefix + command} audios_bot
-الوصف: يعطل الأصوات الخاصة بالبوت من قائمة الأصوات لجميع الدردشات الخاصة.
-ملحوظة: يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.
+--------------------------------
 
-الخيار: 🤖 | MODOIA
-الأمر: ${usedPrefix + command} modoia
-الوصف: يفعل وضع "الذكاء الاصطناعي" مع GPT في جميع الدردشات الخاصة.
-ملحوظة: يمكن استخدام هذا الأمر فقط بواسطة مالكي البوت.`.trim();
-  const isEnable = /true|تشغيل|(turn)?on|1/i.test(command);
+*الخيار:* 🔊 | صوت_بوت
+*الامر:* ${usedPrefix + command} اصوات_البوت
+*الوصف:* يتم الغاء جميعرالصوات الخاصه بالبوت .
+*الحاله:* المطور بس الي يستخدم الامر ده.`.trim();
+
+  const isEnable = /true|افتح|enable|(turn)?on|1/i.test(command);
   const chat = global.db.data.chats[m.chat];
   const user = global.db.data.users[m.sender];
   const bot = global.db.data.settings[conn.user.jid] || {};
   const type = (args[0] || '').toLowerCase();
   let isAll = false; const isUser = false;
   switch (type) {
-    case 'welcome':
+    case 'الترحيب':
       if (!m.isGroup) {
         if (!isOwner) {
           global.dfail('group', m, conn);
@@ -175,7 +161,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       chat.welcome = isEnable;
       break;
-    case 'detect':
+    case 'كشف':
       if (!m.isGroup) {
         if (!isOwner) {
           global.dfail('group', m, conn);
@@ -187,7 +173,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       chat.detect = isEnable;
       break;
-    case 'detect2':
+    case 'كشف2':
       if (!m.isGroup) {
         if (!isOwner) {
           global.dfail('group', m, conn);
@@ -199,9 +185,9 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       chat.detect2 = isEnable;
       break;
-    case 'simsimi':
+    case 'سمسمي':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
           throw false;
         }
@@ -226,7 +212,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       chat.delete = isEnable;
       break;
-    case 'antidelete':
+    case 'مضادالحذف':
       if (m.isGroup) {
         if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
@@ -235,7 +221,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       chat.antidelete = isEnable;
       break;
-    case 'public':
+    case 'عام':
       isAll = true;
       if (!isROwner) {
         global.dfail('rowner', m, conn);
@@ -243,7 +229,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       global.opts['self'] = !isEnable;
       break;
-    case 'antilink':
+    case 'مضادالينكات':
       if (m.isGroup) {
         if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
@@ -252,7 +238,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       chat.antiLink = isEnable;
       break;
-    case 'antilink2':
+    case 'مضاداللينكات2':
       if (m.isGroup) {
         if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
@@ -261,7 +247,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       chat.antiLink2 = isEnable;
       break;
-    case 'antiviewonce':
+    case 'مضادالاخفاء':
       if (m.isGroup) {
         if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
@@ -272,64 +258,56 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       break;
     case 'modohorny':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
           throw false;
         }
       }
       chat.modohorny = isEnable;
       break;
-    case 'modoadmin':
+    case 'الادمن-فقط':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
           throw false;
         }
       }
       chat.modoadmin = isEnable;
       break;
-    case 'autosticker':
+    case 'ستيكرتلقائي':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
           throw false;
         }
       }
       chat.autosticker = isEnable;
       break;
-    case 'audios':
+    case 'اصوات':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
           throw false;
         }
       }
       chat.audios = isEnable;
       break;
-    case 'restrict':
+    case 'تقيد':
       isAll = true;
-      if (!(isROwner || isOwner)) {
+      if (!isOwner) {
         global.dfail('owner', m, conn);
         throw false;
       }
       bot.restrict = isEnable;
       break;
-    case 'audios_bot':
+    case 'اصوات_البوت':
       isAll = true;
-      if (!(isROwner || isOwner)) {
+      if (!isOwner) {
         global.dfail('owner', m, conn);
         throw false;
       }
       bot.audios_bot = isEnable;      
       break;
-    case 'modoia':
-      isAll = true;
-      if (!(isROwner || isOwner)) {
-        global.dfail('owner', m, conn);
-        throw false;
-      }
-      bot.modoia = isEnable;      
-      break;      
     case 'nyimak':
       isAll = true;
       if (!isROwner) {
@@ -338,16 +316,16 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       global.opts['nyimak'] = isEnable;
       break;
-    case 'autoread':
+    case 'الصحين':
       isAll = true;
-      if (!(isROwner || isOwner)) {
+      if (!isROwner) {
         global.dfail('rowner', m, conn);
         throw false;
       }
       bot.autoread2 = isEnable;
-      //global.opts['autoread'] = isEnable;
+      global.opts['autoread'] = isEnable;
       break;
-    case 'pconly':
+    case 'برايفت':
     case 'privateonly':
       isAll = true;
       if (!isROwner) {
@@ -356,7 +334,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       global.opts['pconly'] = isEnable;
       break;
-    case 'gconly':
+    case 'جروبات':
     case 'grouponly':
       isAll = true;
       if (!isROwner) {
@@ -374,23 +352,23 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       global.opts['swonly'] = isEnable;
       break;
-    case 'anticall':
+    case 'مضادالمكالمات':
       isAll = true;
-      if (!(isROwner || isOwner)) {
-        global.dfail('owner', m, conn);
+      if (!isROwner) {
+        global.dfail('rowner', m, conn);
         throw false;
       }
       bot.antiCall = isEnable;
       break;
-    case 'antiprivado':
+    case 'مضادالخاص':
       isAll = true;
-      if (!(isROwner || isOwner)) {
-        global.dfail('owner', m, conn);
+      if (!isROwner) {
+        global.dfail('rowner', m, conn);
         throw false;
       }
       bot.antiPrivate = isEnable;
       break;
-    case 'modejadibot':
+    case 'البوت-الفرعي':
       isAll = true;
       if (!isROwner) {
         global.dfail('rowner', m, conn);
@@ -398,17 +376,17 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       }
       bot.modejadibot = isEnable;
       break;
-    case 'antispam':
+    case 'مضادالاسبام':
       isAll = true;
-      if (!(isROwner || isOwner)) {
-        global.dfail('owner', m, conn);
+      if (!isROwner) {
+        global.dfail('rowner', m, conn);
         throw false;
       }
       bot.antispam = isEnable;
       break;
-    case 'antitoxic':
+    case 'مضادالشتائم':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
           throw false;
         }
@@ -417,7 +395,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       break;
     case 'antitraba':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
           throw false;
         }
@@ -426,8 +404,8 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       break;
     case 'antiarabes':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
-          global.dfail('admin', m, conn); 
+        if (!(isAdmin || isOwner)) {
+          global.dfail('admin', m, conn);
           throw false;
         }
       }
@@ -435,7 +413,7 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       break;
     case 'antiarabes2':
       if (m.isGroup) {
-        if (!(isAdmin || isROwner || isOwner)) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn);
           throw false;
         }
@@ -446,9 +424,9 @@ const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, is
       if (!/[01]/.test(command)) return await conn.sendMessage(m.chat, {text: optionsFull}, {quoted: m});
       throw false;
   }
-  conn.sendMessage(m.chat, {text: `🗂️ الخيار: ${type}\n🎚️ الحالة: ${isEnable ? 'مفعل' : 'معطل'}\n📣 ل: ${isAll ? 'لهذا البوت' : isUser ? '' : 'لهذه المجموعة'}`}, {quoted: m});
+  conn.sendMessage(m.chat, {text: `🗂️ الخيار: ${type}\n🎚️ ولايه: ${isEnable ? 'شغال' : 'قافل'}\n📣 ل: ${isAll ? 'هذا البوت' : isUser ? '' : 'هذا الدردشه'}`}, {quoted: m});
 };
 handler.help = ['en', 'dis'].map((v) => v + 'able <option>');
 handler.tags = ['group', 'owner'];
-handler.command = /^((تشغ|تعط)يل|(tru|fals)e|(turn)?[01])$/i;
+handler.command = /^((en|dis)able|ا(فتح|قفل)|(turn)?[01])$/i;
 export default handler;
