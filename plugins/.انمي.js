@@ -1,69 +1,66 @@
-import fs from 'fs';
-import axios from 'axios';
+//*كود التفاعل علي القنوات بي اشكال ايموجيات كثيره ✅*
+// By Z4cK ⚡ 
 
-let timeout = 60000;
-let poin = 500;
+const handler = async (m, { text, command, conn, args }) => {
+  if (!text) return conn.reply(m.chat, `*❐『🎭』*\n*مـثـال ╿↶*\n*┇↞『 .${command} رابط القناة + نص الريأكشن 』*`, m);
 
-let handler = async (m, { conn, usedPrefix }) => {
-    conn.tekateki = conn.tekateki ? conn.tekateki : {};
+  console.log(`Received command: ${command}, text: ${text}`);
 
-    let id = m.chat;
-    if (id in conn.tekateki) {
-        conn.reply(m.chat, `
-╮───────────────────────╭ـ
-│ *في سؤال لسه مجاوبتش عليه يا فاشل* ┃❌ ❯
-╯───────────────────────╰ـ`.trim(), conn.tekateki[id][0]);
-        throw false;
+  await conn.sendMessage(m.chat, { react: { text: '🕒', key: m.key } });
+
+  const hurufGaya = {
+    a: '🄰', b: '🄱', c: '🄲', d: '🄳', e: '🄴', f: '🄵', g: '🄶',
+    h: '🄷', i: '🄸', j: '🄹', k: '🄺', l: '🄻', m: '🄼', n: '🄽',
+    o: '🄾', p: '🄿', q: '🅀', r: '🅁', s: '🅂', t: '🅃', u: '🅄',
+    v: '🅅', w: '🅆', x: '➖', y: '🅈', z: '🅉',
+    '0': '⓿', '1': '➊', '2': '➋', '3': '➌', '4': '➍',
+    '5': '➎', '6': '➏', '7': '➐', '8': '➑', '9': '➒'
+  };
+
+  const [mainText, offsetStr] = text.split('|');
+  const link = mainText.trim().split(" ")[0];
+
+  if (!link.includes("https://whatsapp.com/channel/")) {
+    return conn.reply(m.chat, "❌ الرابط غير صحيح!\nمثال: .reactch https://whatsapp.com/channel/xxx/id الرسالة ❤️|5", m);
+  }
+
+  const channelId = link.split('/')[4];
+  const rawMessageId = parseInt(link.split('/')[5]);
+  if (!channelId || isNaN(rawMessageId)) return conn.reply(m.chat, "❌ الرابط غير مكتمل!", m);
+
+  const offset = parseInt(offsetStr?.trim()) || 1;
+  const teksNormal = mainText.trim().split(" ").slice(1).join(' ');
+  const teksTanpaLink = teksNormal.replace(link, '').trim();
+  if (!teksTanpaLink) return conn.reply(m.chat, "❌ اكتب النص أو الإيموجي الذي تريد التفاعل به.", m);
+
+  const emoji = teksTanpaLink.toLowerCase().split('').map(c => {
+    if (c === ' ') return '―';
+    return hurufGaya[c] || c;
+  }).join('');
+
+  try {
+    const metadata = await conn.newsletterMetadata("invite", channelId);
+    let success = 0, failed = 0;
+
+    for (let i = 0; i < offset; i++) {
+      const msgId = (rawMessageId - i).toString();
+      try {
+        await conn.newsletterReactMessage(metadata.id, msgId, emoji);
+        success++;
+      } catch (e) {
+        failed++;
+      }
     }
 
-    try {
-        const fileId = '1ixuyJ2tiYnnlNyRWeSZ4ZkViLFb4EPeF';
-        const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
-        const res = await axios.get(url);
-
-        if (res.data && Array.isArray(res.data)) {
-            let tekateki = res.data;
-            let json = tekateki[Math.floor(Math.random() * tekateki.length)];
-            
-            let _clue = json.response;
-            let clue = _clue.replace(/[A-Za-z]/g, '_');
-            let img = json.image || 'https://telegra.ph/file/034daa6dcfb2270d7ff1c.jpg';
-            let answer = json.response;
-             let questions = json.question || 'من هو هذا ؟';
-             
-
-            let caption = `
-╮───────────────────────╭ـ
-│ ❓ *السـؤال : ${questions}*
-│ ⏳ *الـوقـت : ${(timeout / 1000).toFixed(2)}*
-│ 💰 *الـجـائـزة : ${poin} نقطه*
-│ 🏳️ *الانسـحاب : استخدم [انسحاب] للانسحاب من اللعبة*
-╯───────────────────────╰ـ`.trim();
-
-            conn.tekateki[id] = [
-                await conn.sendMessage(m.chat, { image: { url: img }, caption: caption }, { quoted: m }),
-                json, poin,
-                setTimeout(async () => {
-                    if (conn.tekateki[id]) await conn.reply(m.chat, `
-╮───────────────────────╭ـ
-│ ❎ *خلص الوقت وانت زي منت فاشل مجوبتش*
-│ ✅ *الاجابه هي : ${answer}*
-╯───────────────────────╰ـ`.trim(), conn.tekateki[id][0]);
-
-                    delete conn.tekateki[id];
-                }, timeout)
-            ];
-
-        } else {
-            console.error('The received data is not a valid JSON array.');
-        }
-    } catch (error) {
-        console.error('Error fetching data from Google Drive:', error);
-    }
+    await conn.reply(m.chat, `✅ تم إرسال الريأكشن *${emoji}* بنجاح إلى ${success} رسالة في قناة *${metadata.name}*\n❌ فشل الإرسال في ${failed} رسائل`, m);
+    await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
+  } catch (err) {
+    console.error(err);
+    await conn.reply(m.chat, "❌ حدث خطأ أثناء تنفيذ العملية!", m);
+    await conn.sendMessage(m.chat, { react: { text: '❌', key: m.key } });
+  }
 };
 
-handler.help = ['acertijo'];
-handler.tags = ['game'];
-handler.command = /^(انمي)$/i;
+handler.command = ["reactch3", "تفاعل"];
 
 export default handler;
